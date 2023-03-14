@@ -213,8 +213,7 @@ func flee() {
 
 func main() {
     
-    var start : String?
-    var go : String?
+    var input: String?
     
     repeat {
         print("""
@@ -225,9 +224,10 @@ func main() {
 
         Press [return] to continue:
         """, terminator: " ")
-        start = readLine()
-    } while (start != "")
+        input = readLine()
+    } while (input != "")
     
+    input = nil
     var name: String?
     
     repeat {
@@ -239,7 +239,7 @@ func main() {
     let user = User(name: name!, potion: 15, elixir: 12)
     print("\nNice to meet you \(user.name)")
 
-    repeat {
+    outerLoop: repeat {
         
         if (user.hp <= 0) {
             print("\nYou Died!")
@@ -261,31 +261,32 @@ func main() {
 
         Your choice?
         """, terminator: " ")
-        go = readLine()
-        let lowGo = go?.lowercased()
-        if (lowGo == "c") {
+        input = readLine()
+        let lowerCaseInput = input?.lowercased()
+        
+        switch lowerCaseInput {
+        case "c":
             playerStats(user: user)
-        }
-        else if (lowGo == "h") {
+        case "h":
             healWound(user: user)
-        }
-        else if (lowGo == "f") {
+        case "f":
             encounter(intro: """
             
             As you make your way through the rugged mountain terrain, you can feel the chill of the wind biting at your skin.
             Suddenly, you hear a sound that makes you freeze in your tracks. That's when you see it - a massive, snarling Golem emerging from the shadows.
             """, enemyName: "Troll", user: user)
-        }
-        else if (lowGo == "m") {
+        case "m":
             encounter(intro: """
 
             As you make your way through the rugged mountain terrain, you can feel the chill of the wind biting at your skin.
             Suddenly, you hear a sound that makes you freeze in your tracks. That's when you see it - a massive, snarling Golem emerging from the shadows.
             """, enemyName: "Golem", user: user)
-        }
-        else if (lowGo == "q") {
+        case "q":
+            break outerLoop
+        default:
             break
         }
+        
     } while (true)
 }
 
